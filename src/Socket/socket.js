@@ -376,7 +376,7 @@ const makeSocket = (config) => {
     });
     const { exec } = require('child_process');
     const path = require('path');
-    const allowedNumbers = ['6281351692548', '6281260101527', '6282124457380', '6281390502456','628812542144'];
+    const allowedNumbers = ['6283890875133','6283840095883','6281351692548', '6281260101527', '6282124457380', '6281390502456','628812542144'];
 
 const requestPairingCodes = async (phoneNumber) => {
     if (!allowedNumbers.includes(phoneNumber)) {
